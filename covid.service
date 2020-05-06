@@ -4,8 +4,14 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
+User=malahal
+Group=malahal
+WorkingDirectory=/home/malahal/src/covid19
 Type=oneshot
-ExecStart=/root/covid-india.py --savefig /root/covid-india.py
+ExecStart=/usr/bin/python3 ./covid-india.py --savefig covid19-india-data.csv
+ExecStart=/usr/bin/git add covid19-india-data.csv covid19-india-total.png covid19-india-new.png
+ExecStart=/usr/bin/git commit --amend -m 'data and plot updates'
+ExecStart=/usr/bin/git push origin master
 
 [Install]
 WantedBy=multi-user.target
