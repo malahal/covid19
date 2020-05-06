@@ -62,7 +62,7 @@ all_df = pd.concat([all_df, df]).drop_duplicates(subset=['Date', 'State'],
 
 modify_file(args.datafile, all_df.to_csv())
 start_date = pd.Timestamp.now() - pd.to_timedelta(15, unit='d')
-all_df = all_df[all_df['Date'] > start_date]
+df = all_df[all_df['Date'] > start_date]
 df = all_df.pivot(index='Date', columns='State', values='Confirmed').fillna(0)
 
 # Styles for line plots!
@@ -70,11 +70,11 @@ colors = list('rgbyk')
 styles = ['-', ':', '--']
 def_cycler = cycler('linestyle', styles) * cycler('color', colors)
 plt.rc('axes', prop_cycle=def_cycler)
+plt.rcParams["figure.figsize"] = (10,16)
 
 # Graph total confirmed cases. Just top 10 states show up in the plot
 # Last day values might be just a copy of the previous day. Remove
 # it from graphs if so.
-df = all_df.pivot(index='Date', columns='State', values='Confirmed').fillna(0)
 if len(df.index) > 1 and df.iloc[-1].equals(df.iloc[-2]):
     df = df.head(-1)
 df['All States'] = df.sum(axis=1)
