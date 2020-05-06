@@ -63,7 +63,7 @@ all_df = pd.concat([all_df, df]).drop_duplicates(subset=['Date', 'State'],
 modify_file(args.datafile, all_df.to_csv())
 start_date = pd.Timestamp.now() - pd.to_timedelta(15, unit='d')
 df = all_df[all_df['Date'] > start_date]
-df = all_df.pivot(index='Date', columns='State', values='Confirmed').fillna(0)
+df = df.pivot(index='Date', columns='State', values='Confirmed').fillna(0)
 
 # Styles for line plots!
 colors = list('rgbyk')
