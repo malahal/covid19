@@ -8,10 +8,7 @@ User=malahal
 Group=malahal
 WorkingDirectory=/home/malahal/src/covid19
 Type=oneshot
-ExecStart=/usr/bin/python3 ./covid-india.py --savefig covid19-india-data.csv
-ExecStart=/usr/bin/git add covid19-india-data.csv covid19-india-total.png covid19-india-new.png
-ExecStart=/usr/bin/git commit -m 'automatic script updates'
-ExecStart=/usr/bin/git push origin master
+ExecStart=/bin/bash ./covid.sh
 
 [Install]
 WantedBy=multi-user.target
