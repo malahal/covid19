@@ -1,0 +1,11 @@
+[Unit]
+Description=Timer to start Covid19 service
+Wants=network-online.target
+After=network-online.target
+
+[Timer]
+OnBootSec=15min
+OnUnitActiveSec=1h
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=Covid19 start/stop devices
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/root/covid-india.py --savefig /root/covid-india.py
+
+[Install]
+WantedBy=multi-user.target
