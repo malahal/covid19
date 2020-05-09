@@ -15,4 +15,6 @@ Same script generates plots of top 10 states/UTs with total confirmed
 cases and new cases.
 
 .. image:: ./covid19-india-total.png
+.. image:: ./covid19-states-total.png
 .. image:: ./covid19-india-new.png
+.. image:: ./covid19-states-new.png

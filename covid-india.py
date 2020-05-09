@@ -70,34 +70,62 @@ colors = list('rgbyk')
 styles = ['-', ':', '--']
 def_cycler = cycler('linestyle', styles) * cycler('color', colors)
 plt.rc('axes', prop_cycle=def_cycler)
-plt.rcParams["figure.figsize"] = (10,16)
+plt.rcParams["figure.figsize"] = (14,11)
 
-# Graph total confirmed cases. Just top 10 states show up in the plot
 # Last day values might be just a copy of the previous day. Remove
 # it from graphs if so.
 if len(df.index) > 1 and df.iloc[-1].equals(df.iloc[-2]):
     df = df.head(-1)
-df['All States'] = df.sum(axis=1)
-df = df.reindex(df.iloc[-1].sort_values(ascending=False).index, axis=1)
-fig1, ax1 = plt.subplots()
-# Include only top 10
-df.iloc[:,0:10].plot.line(ax=ax1, marker='o')
-ax1.grid()
+
+# Plot all india total cases
+fig, ax = plt.subplots()
+df.sum(axis=1).plot.line(ax=ax, marker='o')
+ax.grid()
+plt.title("Total cases, all of India  (generated at %s IST)" %
+        pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S'))
 plt.ylabel("Total number of confirmed cases")
 if args.savefig:
-    fig1.savefig("covid19-india-total.png")
+    fig.savefig("covid19-india-total.png")
 else:
     plt.show()
 
-# Plot new cases
-df = df.diff() # computes daily new cases
+# Sort states and plot total cases of top 10 states
 df = df.reindex(df.iloc[-1].sort_values(ascending=False).index, axis=1)
-fig1, ax1 = plt.subplots()
+fig, ax = plt.subplots()
 # Include only top 10
-df.iloc[:,0:10].plot.line(ax=ax1, marker='o')
-ax1.grid()
+df.iloc[:,0:10].plot.line(ax=ax, marker='o')
+ax.grid()
+plt.title("Total cases, top 10 states  (generated at %s IST)" %
+        pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S'))
+plt.ylabel("Total number of confirmed cases")
+if args.savefig:
+    fig.savefig("covid19-states-total.png")
+else:
+    plt.show()
+
+# Plot new cases of all india
+fig, ax = plt.subplots()
+df.sum(axis=1).diff().plot.line(ax=ax, marker='o')
+ax.grid()
+plt.title("New cases, all of India  (generated at %s IST)" %
+        pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S'))
 plt.ylabel("Number of new cases")
 if args.savefig:
-    fig1.savefig("covid19-india-new.png")
+    fig.savefig("covid19-india-new.png")
+else:
+    plt.show()
+
+# Sort and plot new cases of top 10 states
+df = df.diff() # computes daily new cases
+df = df.reindex(df.iloc[-1].sort_values(ascending=False).index, axis=1)
+fig, ax = plt.subplots()
+# Include only top 10
+df.iloc[:,0:10].plot.line(ax=ax, marker='o')
+ax.grid()
+plt.title("New cases, top 10 states  (generated at %s IST)" %
+        pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S'))
+plt.ylabel("Number of new cases")
+if args.savefig:
+    fig.savefig("covid19-states-new.png")
 else:
     plt.show()
