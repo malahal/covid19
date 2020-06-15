@@ -57,6 +57,10 @@ df['Confirmed'] = df['Confirmed'].astype('int64')
 all_df = pd.read_csv(args.datafile, index_col=0) # match defunct from_cvs
 all_df['Date'] = pd.to_datetime(all_df['Date']).dt.normalize()
 all_df['Confirmed'] = all_df['Confirmed'].astype('int64')
+# Telengana was changed to Telanagana on June 11, 2020!
+all_df['State'] = all_df['State'].replace('Telengana', 'Telangana')
+all_df = all_df.drop_duplicates(keep='last') # June 11's data for both is same!
+
 all_df = pd.concat([all_df, df]).drop_duplicates(subset=['Date', 'State'],
                                             keep='last').reset_index(drop=True)
 
