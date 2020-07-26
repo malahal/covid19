@@ -48,6 +48,7 @@ df = df.iloc[:(df["Name of State / UT"] == 'West Bengal').idxmax()+1]
 cols = [x for x in list(df.columns) if ("State" in x or "Confirmed" in x)]
 df = df[cols] # two columns data frame
 df.columns = ['State', 'Confirmed'] # rename columns
+df['State'] = df['State'].str.rstrip('*')   # remove asterisks.
 
 # Add date column
 df['Date'] = pd.Timestamp.now().normalize()
@@ -57,8 +58,13 @@ df['Confirmed'] = df['Confirmed'].astype('int64')
 all_df = pd.read_csv(args.datafile, index_col=0) # match defunct from_cvs
 all_df['Date'] = pd.to_datetime(all_df['Date']).dt.normalize()
 all_df['Confirmed'] = all_df['Confirmed'].astype('int64')
+
 # Telengana was changed to Telanagana on June 11, 2020!
 all_df['State'] = all_df['State'].replace('Telengana', 'Telangana')
+
+# Remove asterisk's, happened to Telangana on July 26, 2020.
+all_df['State'] = all_df['State'].str.rstrip('*')   # remove asterisks.
+
 all_df = all_df.drop_duplicates(keep='last') # June 11's data for both is same!
 
 all_df = pd.concat([all_df, df]).drop_duplicates(subset=['Date', 'State'],
